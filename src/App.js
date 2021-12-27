@@ -1,27 +1,37 @@
-import React from 'react'
-import './App.css';
-import Header from './components/Header';
-import Login from './pages/Login';
-import Map from './pages/Map';
-import Profile from './pages/Profile';
-import Registration from './pages/Registration';
+import React from "react";
+import "./App.css";
+import { WithAuth } from "./context/AuthContext";
+import { LoginWithAuth } from "./pages/Login";
+import { RegistrationWithAuth } from "./pages/Registration";
+import { MapWithAuth } from "./pages/Map";
+import { ProfileWithAuth } from "./pages/Profile";
 
-function App() {
-  const [currentPage, setCurrentPage] = React.useState('login')
+function App({ isLoggedIn }) {
+  const [currentPage, setCurrentPage] = React.useState("login");
 
+  const navigateTo = (page) => {
+    if (isLoggedIn) {
+      setCurrentPage(page);
+    } else {
+      if (page === 'login' || page === 'registration') {
+        setCurrentPage(page);
+      } else {
+        setCurrentPage('login');
+      }
+    }
+  };
   return (
     <>
-      <Header setCurrentPage={setCurrentPage} />
       {
         {
-          'login': <Login setCurrentPage={setCurrentPage} />,
-          'registration': <Registration setCurrentPage={setCurrentPage} />,
-          'profile': <Profile />,
-          'map': <Map />
+          login: <LoginWithAuth navigateTo={navigateTo} />,
+          registration: <RegistrationWithAuth navigateTo={navigateTo} />,
+          profile: <ProfileWithAuth navigateTo={navigateTo} />,
+          map: <MapWithAuth navigateTo={navigateTo} />,
         }[currentPage]
       }
     </>
   );
 }
 
-export default App;
+export default WithAuth(App);
