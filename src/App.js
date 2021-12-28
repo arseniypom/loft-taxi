@@ -10,14 +10,10 @@ function App({ isLoggedIn }) {
   const [currentPage, setCurrentPage] = React.useState("login");
 
   const navigateTo = (page) => {
-    if (isLoggedIn) {
+    if (isLoggedIn || page === 'registration') {
       setCurrentPage(page);
     } else {
-      if (page === 'login' || page === 'registration') {
-        setCurrentPage(page);
-      } else {
         setCurrentPage('login');
-      }
     }
   };
   return (

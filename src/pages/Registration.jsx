@@ -12,24 +12,12 @@ import {
   Grid,
   CssBaseline,
 } from "@mui/material";
-import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
 
 import bigLogo from "../assets/images/big_logo.png";
 import mapImg from "../assets/images/map.png";
 import { WithAuth } from "../context/AuthContext";
-
-const ActionButton = styled(Button)`
-  width: 100%;
-  color: #000;
-  background-color: #fdbf5a;
-  border-radius: 70px;
-  margin-bottom: 20px;
-
-  :hover {
-    background-color: #ffa842;
-  }
-`;
+import ActionButton from "../components/ActionButton";
 
 const ActionLink = styled(Link)`
   color: #fdbf5a;

@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import PropTypes from 'prop-types';
 
 import {
@@ -10,28 +9,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import Button from "@material-ui/core/Button";
 
 import { HeaderWithAuth } from "../components/Header";
+import ActionButton from "../components/ActionButton";
 import { WithAuth } from "../context/AuthContext";
 
 import mapImg from "../assets/images/map.png";
 import logo from "../assets/images/logo.png";
 import cardSymbol1 from "../assets/images/card-symbol1.svg";
 import cardSymbol2 from "../assets/images/card-symbol2.png";
-
-const ActionButton = styled(Button)`
-  width: 100%;
-  max-width: 353px;
-  color: #000;
-  background-color: #fdbf5a;
-  border-radius: 70px;
-  margin-bottom: 20px;
-
-  :hover {
-    background-color: #ffa842;
-  }
-`;
 
 function Profile({ navigateTo }) {
   return (
