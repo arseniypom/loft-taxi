@@ -1,11 +1,13 @@
 import React from 'react'
-import Box from '@mui/material/Box';
+import PropTypes from 'prop-types';
+
 import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, Button, Container, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
+import { Box, AppBar, Button, Container, IconButton, Menu, MenuItem, Toolbar, Typography, Link } from '@mui/material';
 
-import { ReactComponent as Logo } from '../images/lofttaxi.svg'
+import { ReactComponent as Logo } from '../assets/images/lofttaxi.svg'
+import { WithAuth } from '../context/AuthContext';
 
-function Header({setCurrentPage}) {
+function Header({navigateTo, logout}) {
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
 
@@ -17,8 +19,13 @@ function Header({setCurrentPage}) {
     const { name } = e.target
     setAnchorElNav(null);
 
-    setCurrentPage(name)
+    navigateTo(name)
   };
+
+  const handleLogout = () => {
+    logout()
+    navigateTo('login')
+  }
 
 
   return (
@@ -29,7 +36,9 @@ function Header({setCurrentPage}) {
             sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}
             noWrap
           >
-            <Logo />
+            <Link component="button">
+              <Logo onClick={() => navigateTo('map')} />
+            </Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
           <IconButton
@@ -61,14 +70,14 @@ function Header({setCurrentPage}) {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              <MenuItem onClick={handleNavButtonClick}>
+              <MenuItem name='map' onClick={handleNavButtonClick}>
                 <Typography textAlign="center">Карта</Typography>
               </MenuItem>
-              <MenuItem onClick={handleNavButtonClick}>
+              <MenuItem name='profile' onClick={handleNavButtonClick}>
                 <Typography textAlign="center">Профиль</Typography>
               </MenuItem>
-              <MenuItem onClick={handleNavButtonClick}>
-                <Typography textAlign="center">Логин</Typography>
+              <MenuItem name='login' onClick={handleLogout}>
+                <Typography textAlign="center">Выйти</Typography>
               </MenuItem>
             </Menu>
           </Box>
@@ -97,10 +106,10 @@ function Header({setCurrentPage}) {
               </Button>
               <Button
                 name='login'
-                onClick={handleNavButtonClick}
+                onClick={handleLogout}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                Логин
+                Выйти
               </Button>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
@@ -111,4 +120,9 @@ function Header({setCurrentPage}) {
   )
 }
 
-export default Header
+Header.propTypes = {
+  navigateTo: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
+};
+
+export const HeaderWithAuth = WithAuth(Header)

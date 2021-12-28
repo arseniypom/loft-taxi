@@ -21,3 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+/src/pages/Authentication.jsx
+/src/components/LoginForm.jsx
+/src/components/RegistrationForm.jsx

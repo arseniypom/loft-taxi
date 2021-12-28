@@ -1,72 +1,148 @@
-import React from 'react'
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import { Button, CardActions, FormLabel, Container, Link, TextField, Typography } from '@mui/material'
+import React from "react";
+import styled from "styled-components";
+import PropTypes from "prop-types";
 
-function Login({setCurrentPage}) {
+import Box from "@mui/material/Box";
+import {
+  Card,
+  CardActions,
+  CardContent,
+  TextField,
+  Typography,
+  Grid,
+  CssBaseline,
+} from "@mui/material";
+import Link from "@material-ui/core/Link";
+
+import bigLogo from "../assets/images/big_logo.png";
+import mapImg from "../assets/images/map.png";
+import { WithAuth } from "../context/AuthContext";
+import ActionButton from "../components/ActionButton";
+
+const ActionLink = styled(Link)`
+  color: #fdbf5a;
+  margin-left: 5px;
+
+  :hover {
+    color: #ffa842;
+  }
+`;
+
+function Login({ navigateTo, isLoggedIn, login }) {
   const [loginData, setLoginData] = React.useState({
-    email: '',
-    password: ''
-  })
+    email: "",
+    password: "",
+  });
 
   const handleInput = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
 
-    setLoginData((prev) => ({...prev, [name]: value}))
-  }
+    setLoginData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = () => {
-    console.log('LOGIN DATA: ', loginData)
-    setCurrentPage('map')
+    login(loginData.email, loginData.password);
+  };
+
+  if (isLoggedIn) {
+    navigateTo("map");
   }
-
   return (
-    <Container>
-      <Box sx={{ maxWidth: 580, maxHeight: 541,}}>
-        <Card variant="outlined" sx={{ minWidth: 275 }}>
-          <CardContent>
+    <Grid container component="main" sx={{ height: "100vh" }}>
+      <CssBaseline />
+      <Grid
+        item
+        xs={false}
+        sm={4}
+        md={5}
+        sx={{
+          backgroundColor: "#1C1A19",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        <img
+          src={bigLogo}
+          alt="logo"
+          style={{ maxWidth: "192px", width: "100%" }}
+        />
+      </Grid>
+      <Grid item xs={12} sm={8} md={7}>
+        <Box
+          sx={{
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            background: `url(${mapImg})`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+          }}
+        >
+          <Card
+            variant="outlined"
+            sx={{
+              minWidth: 275,
+              maxWidth: 580,
+              p: "56px 110px",
+              textAlign: "center",
+            }}
+          >
+            <CardContent>
+              <Typography variant="h4">Войти</Typography>
 
-            <Typography variant="h4">
-              Войти
+              <TextField
+                id="email"
+                name="email"
+                label="Email"
+                variant="standard"
+                onChange={handleInput}
+                sx={{ mb: 2 }}
+                fullWidth
+              />
+              <TextField
+                id="password"
+                name="password"
+                label="Пароль"
+                type="password"
+                variant="standard"
+                onChange={handleInput}
+                sx={{ mb: 2 }}
+                fullWidth
+              />
+
+              <Link>Забыли пароль?</Link>
+            </CardContent>
+
+            <CardActions>
+              <ActionButton size="large" onClick={handleSubmit}>
+                Войти
+              </ActionButton>
+            </CardActions>
+
+            <Typography color="#828282">
+              Новый пользователь?
+              <ActionLink
+                component="button"
+                variant="body1"
+                onClick={() => navigateTo("registration")}
+              >
+                Регистрация
+              </ActionLink>
             </Typography>
-
-            <TextField
-              id="email"
-              name="email"
-              label="Email"
-              variant="standard"
-              onChange={handleInput}
-              fullWidth
-            />
-
-            <TextField
-              id="password"
-              name="password"
-              label="Пароль"
-              type="password"
-              variant="standard"
-              onChange={handleInput}
-              fullWidth
-            />
-
-            <FormLabel>
-              Забыли пароль?
-            </FormLabel>
-          </CardContent>
-
-          <CardActions>
-            <Button color="primary" size="big" onClick={handleSubmit}>Войти</Button>
-          </CardActions>
-          
-          <Typography>
-            Новый пользователь?
-            <Link component="button" variant="body1" onClick={() => setCurrentPage('registration')}>Регистрация</Link>
-          </Typography>
-        </Card>
-      </Box>
-    </Container>
-  )
+          </Card>
+        </Box>
+      </Grid>
+    </Grid>
+  );
 }
 
-export default Login
+Login.propTypes = {
+  navigateTo: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+  login: PropTypes.func.isRequired,
+};
+
+export const LoginWithAuth = WithAuth(Login);
