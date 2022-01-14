@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+
+import { register } from "../actions";
 
 import Box from "@mui/material/Box";
 import {
@@ -12,14 +15,14 @@ import {
   Grid,
   CssBaseline,
 } from "@mui/material";
-import Link from "@material-ui/core/Link";
+import StyledLink from "@material-ui/core/Link";
+import { Link, useNavigate } from "react-router-dom";
 
 import bigLogo from "../assets/images/big_logo.png";
 import mapImg from "../assets/images/map.png";
-import { WithAuth } from "../context/AuthContext";
 import ActionButton from "../components/ActionButton";
 
-const ActionLink = styled(Link)`
+const ActionLink = styled(StyledLink)`
   color: #fdbf5a;
   margin-left: 5px;
 
@@ -28,25 +31,26 @@ const ActionLink = styled(Link)`
   }
 `;
 
-function Registration({ navigateTo, isLoggedIn, login }) {
+function Registration({ isLoggedIn, register }) {
+  const navigate = useNavigate();
   const [registrationData, setRegistrationData] = React.useState({
     email: "",
     name: "",
+    surname: "",
     password: "",
   });
 
   const handleInput = (e) => {
     const { name, value } = e.target;
-
     setRegistrationData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = () => {
-    login(registrationData.email, registrationData.password);
+    register(registrationData.email, registrationData.name, registrationData.surname, registrationData.password);
   };
 
   if (isLoggedIn) {
-    navigateTo("map");
+    navigate("/map");
   }
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
@@ -107,7 +111,18 @@ function Registration({ navigateTo, isLoggedIn, login }) {
               <TextField
                 id="name"
                 name="name"
-                label="Как Вас зовут?"
+                label="Ваше имя"
+                type="text"
+                variant="standard"
+                onChange={handleInput}
+                sx={{ mb: 2 }}
+                fullWidth
+              />
+
+              <TextField
+                id="surname"
+                name="surname"
+                label="Ваша фамилия"
                 type="text"
                 variant="standard"
                 onChange={handleInput}
@@ -133,13 +148,14 @@ function Registration({ navigateTo, isLoggedIn, login }) {
             </CardActions>
             <Typography>
               Уже зарегистрированы?
-              <ActionLink
-                component="button"
-                variant="body1"
-                onClick={() => navigateTo("login")}
-              >
-                Войти
-              </ActionLink>
+              <Link to="/">
+                <ActionLink
+                  component="button"
+                  variant="body1"
+                >
+                  Войти
+                </ActionLink>
+              </Link>
             </Typography>
           </Card>
         </Box>
@@ -149,9 +165,11 @@ function Registration({ navigateTo, isLoggedIn, login }) {
 }
 
 Registration.propTypes = {
-  navigateTo: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
-  login: PropTypes.func.isRequired,
+  register: PropTypes.func,
 };
 
-export const RegistrationWithAuth = WithAuth(Registration);
+export const RegistrationWithConnect = connect(
+  (state) => ({ isLoggedIn: state.auth.isLoggedIn }),
+  { register }
+)(Registration);

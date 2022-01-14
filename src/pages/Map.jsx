@@ -1,13 +1,11 @@
 import React from "react";
 import mapboxgl from "mapbox-gl";
-import PropTypes from 'prop-types';
 
 import { Box, Grid } from "@mui/material";
 
-import { HeaderWithAuth } from "../components/Header";
-import { WithAuth } from "../context/AuthContext";
+import { HeaderWithConnect } from "../components/Header";
 
-function Map({ navigateTo }) {
+function Map() {
   const mapRef = React.useRef(null);
   const map = React.useRef(null);
 
@@ -31,16 +29,13 @@ function Map({ navigateTo }) {
   return (
     <Grid container direction="column" sx={{ height: "100vh" }}>
       <Grid item>
-        <HeaderWithAuth navigateTo={navigateTo} />
+        <HeaderWithConnect />
       </Grid>
       <Grid item xs>
         <Box
           className="map-wrapper"
           sx={{
             height: "100%",
-            // display: "flex",
-            // justifyContent: "center",
-            // alignItems: "center",
             position: 'relative',
           }}
         >
@@ -51,8 +46,4 @@ function Map({ navigateTo }) {
   );
 }
 
-Map.propTypes = {
-  navigateTo: PropTypes.func.isRequired,
-};
-
-export const MapWithAuth = WithAuth(Map);
+export const MapWithConnect = Map;

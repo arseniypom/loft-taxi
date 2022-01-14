@@ -1,33 +1,37 @@
 import React from "react";
 import "./App.css";
-import { WithAuth } from "./context/AuthContext";
-import { LoginWithAuth } from "./pages/Login";
-import { RegistrationWithAuth } from "./pages/Registration";
-import { MapWithAuth } from "./pages/Map";
-import { ProfileWithAuth } from "./pages/Profile";
+import { connect } from "react-redux";
+import { Routes, Route } from "react-router-dom";
 
-function App({ isLoggedIn }) {
-  const [currentPage, setCurrentPage] = React.useState("login");
+import { LoginWithConnect } from "./pages/Login";
+import { RegistrationWithConnect } from "./pages/Registration";
+import { MapWithConnect } from "./pages/Map";
+import { ProfileWithConnect } from "./pages/Profile";
+import { PrivateRoute } from "./PrivateRoute";
 
-  const navigateTo = (page) => {
-    if (isLoggedIn || page === 'registration') {
-      setCurrentPage(page);
-    } else {
-        setCurrentPage('login');
-    }
-  };
+function App() {
   return (
-    <>
-      {
-        {
-          login: <LoginWithAuth navigateTo={navigateTo} />,
-          registration: <RegistrationWithAuth navigateTo={navigateTo} />,
-          profile: <ProfileWithAuth navigateTo={navigateTo} />,
-          map: <MapWithAuth navigateTo={navigateTo} />,
-        }[currentPage]
-      }
-    </>
+    <Routes>
+      <Route path="/" element={<LoginWithConnect />} />
+      <Route path="/registration" element={<RegistrationWithConnect />} />
+      <Route
+        path="/map"
+        element={
+          <PrivateRoute>
+            <MapWithConnect />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <PrivateRoute>
+            <ProfileWithConnect />
+          </PrivateRoute>
+        }
+      />
+    </Routes>
   );
 }
 
-export default WithAuth(App);
+export default connect((state) => ({ isLoggedIn: state.auth.isLoggedIn }))(App);

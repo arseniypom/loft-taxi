@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+
+import { authenticate } from "../actions";
 
 import Box from "@mui/material/Box";
 import {
@@ -12,14 +15,14 @@ import {
   Grid,
   CssBaseline,
 } from "@mui/material";
-import Link from "@material-ui/core/Link";
+import StyledLink from "@material-ui/core/Link";
+import { Link, Navigate } from "react-router-dom";
 
 import bigLogo from "../assets/images/big_logo.png";
 import mapImg from "../assets/images/map.png";
-import { WithAuth } from "../context/AuthContext";
 import ActionButton from "../components/ActionButton";
 
-const ActionLink = styled(Link)`
+const ActionLink = styled(StyledLink)`
   color: #fdbf5a;
   margin-left: 5px;
 
@@ -28,7 +31,8 @@ const ActionLink = styled(Link)`
   }
 `;
 
-function Login({ navigateTo, isLoggedIn, login }) {
+function Login({ isLoggedIn, authenticate }) {
+  // const navigate = useNavigate();
   const [loginData, setLoginData] = React.useState({
     email: "",
     password: "",
@@ -36,17 +40,19 @@ function Login({ navigateTo, isLoggedIn, login }) {
 
   const handleInput = (e) => {
     const { name, value } = e.target;
-
     setLoginData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = () => {
-    login(loginData.email, loginData.password);
+    authenticate(loginData.email, loginData.password);
   };
 
   if (isLoggedIn) {
-    navigateTo("map");
+    return (
+      <Navigate to='/map' />
+    )
   }
+
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
       <CssBaseline />
@@ -113,7 +119,7 @@ function Login({ navigateTo, isLoggedIn, login }) {
                 fullWidth
               />
 
-              <Link>Забыли пароль?</Link>
+              <StyledLink>Забыли пароль?</StyledLink>
             </CardContent>
 
             <CardActions>
@@ -124,13 +130,14 @@ function Login({ navigateTo, isLoggedIn, login }) {
 
             <Typography color="#828282">
               Новый пользователь?
-              <ActionLink
-                component="button"
-                variant="body1"
-                onClick={() => navigateTo("registration")}
-              >
-                Регистрация
-              </ActionLink>
+              <Link to="/registration">
+                <ActionLink
+                  component="button"
+                  variant="body1"
+                >
+                  Регистрация
+                </ActionLink>
+              </Link>
             </Typography>
           </Card>
         </Box>
@@ -140,9 +147,11 @@ function Login({ navigateTo, isLoggedIn, login }) {
 }
 
 Login.propTypes = {
-  navigateTo: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
-  login: PropTypes.func.isRequired,
+  logIn: PropTypes.func,
 };
 
-export const LoginWithAuth = WithAuth(Login);
+export const LoginWithConnect = connect(
+  (state) => ({ isLoggedIn: state.auth.isLoggedIn }),
+  { authenticate }
+)(Login);
