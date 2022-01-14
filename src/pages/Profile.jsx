@@ -20,7 +20,7 @@ import mapImg from "../assets/images/map.png";
 import logo from "../assets/images/logo.png";
 import cardSymbol1 from "../assets/images/card-symbol1.svg";
 import cardSymbol2 from "../assets/images/card-symbol2.png";
-import { serverSaveCredentials } from "../api";
+import { serverSendCredentials } from "../api";
 
 function Profile({ creds, token, saveCredentials }) {
   const [credentialsData, setCredentialsData] = React.useState({
@@ -37,7 +37,7 @@ function Profile({ creds, token, saveCredentials }) {
 
   const handleSubmit = async () => {
     const { cardNumber, expiryDate, cardName, cvc } = credentialsData;
-    const success = await serverSaveCredentials(
+    const success = await serverSendCredentials(
       cardNumber,
       expiryDate,
       cardName,

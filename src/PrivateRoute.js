@@ -5,5 +5,5 @@ import { connect } from "react-redux";
 export const PrivateRoute = connect((state) => ({
   isLoggedIn: state.auth.isLoggedIn,
 }))(({ children, isLoggedIn, ...rest }) =>
-  isLoggedIn ? children : <Navigate to="/registration" />
+  isLoggedIn ? children : <Navigate to="/" />
 );

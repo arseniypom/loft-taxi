@@ -20,8 +20,8 @@ export const authMiddleware = (store) => (next) => async (action) => {
     }
   } else if (action.type === LOG_IN) {
     const data = await serverGetCredentials(action.payload);
-    if (data.cardNumber) {
-      store.dispatch(saveCredentials({cardNumber: data.cardNumber}))
+    if (data) {
+      store.dispatch(saveCredentials({cardNumber: data.cardNumber, expiryDate: data.expiryDate, cardName: data.cardName, cvc: data.cvc}))
     }
     next(action)
   } else if (action.type === LOG_OUT) {
