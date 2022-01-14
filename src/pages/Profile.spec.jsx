@@ -4,17 +4,22 @@ import { Provider } from "react-redux";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 import { ProfileWithConnect } from "./Profile";
-import { store } from "../store";
-import { PrivateRoute } from "./PrivateRoute";
+// import { store } from "../store"
+import { PrivateRoute } from "../PrivateRoute";
 
 describe("ProfileWithConnect", () => {
   it("renders correctly", () => {
+    const store = {
+      getState: () => ({ auth: { isLoggedIn: true }, creds: {} }),
+      subscribe: () => {},
+      dispatch: () => {},
+    };
     const { getByLabelText } = render(
       <Provider store={store}>
         <BrowserRouter>
           <Routes>
             <Route
-              path="/profile"
+              path="/"
               element={
                 <PrivateRoute>
                   <ProfileWithConnect />

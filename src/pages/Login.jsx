@@ -16,7 +16,7 @@ import {
   CssBaseline,
 } from "@mui/material";
 import StyledLink from "@material-ui/core/Link";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 import bigLogo from "../assets/images/big_logo.png";
 import mapImg from "../assets/images/map.png";
@@ -32,7 +32,7 @@ const ActionLink = styled(StyledLink)`
 `;
 
 function Login({ isLoggedIn, authenticate }) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [loginData, setLoginData] = React.useState({
     email: "",
     password: "",
@@ -48,8 +48,11 @@ function Login({ isLoggedIn, authenticate }) {
   };
 
   if (isLoggedIn) {
-    navigate("/map");
+    return (
+      <Navigate to='/map' />
+    )
   }
+
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
       <CssBaseline />

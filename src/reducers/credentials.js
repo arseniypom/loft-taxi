@@ -1,7 +1,7 @@
-import { SAVE_CREDENTIALS } from "../actions";
+import { SAVE_CREDENTIALS, CLEAR_CREDENTIALS } from "../actions";
 
 const initialState = {
-  cardNumber: "0000 0000 0000 0000",
+  cardNumber: "",
   expiryDate: "",
   cardName: "",
   cvc: "",
@@ -11,12 +11,10 @@ const credentials = (state = initialState, action) => {
   switch (action.type) {
     case SAVE_CREDENTIALS:
       const { cardNumber, expiryDate, cardName, cvc } = action.payload;
-      return { cardNumber, expiryDate, cardName, cvc };
+      return { ...state, cardNumber, expiryDate, cardName, cvc };
+    case CLEAR_CREDENTIALS:
+      return initialState;
     default:
-      const billingInfo = localStorage.getItem('billingInfo');
-      if (billingInfo) {
-        return {...state, ...JSON.parse(billingInfo)}
-      }
       return state;
   }
 };

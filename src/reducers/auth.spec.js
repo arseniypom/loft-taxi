@@ -1,5 +1,5 @@
 import auth from "./auth";
-import { logIn, logOut, saveUserInfo } from "../actions";
+import { logIn, logOut, saveToken } from "../actions";
 
 describe("auth", () => {
   describe("#LOG_IN", () => {
@@ -17,22 +17,10 @@ describe("auth", () => {
     });
   });
 
-  describe("#SAVE_USER_INFO", () => {
+  describe("#SAVE_TOKEN", () => {
     it("returns user info", () => {
-      expect(
-        auth(
-          {},
-          saveUserInfo({
-            email: "email@mail.ru",
-            name: "John",
-            surname: "Appleseed",
-          })
-        )
-      ).toEqual({
-        isLoggedIn: true,
-        email: "email@mail.ru",
-        name: "John",
-        surname: "Appleseed",
+      expect(auth({}, saveToken("recDrszHlYr5Bd7ZY"))).toEqual({
+        token: "recDrszHlYr5Bd7ZY",
       });
     });
   });

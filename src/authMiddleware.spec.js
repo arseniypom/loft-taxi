@@ -10,15 +10,17 @@ describe("authMiddleware", () => {
   describe("#AUTHENTICATE", () => {
     describe("with correct credentials", () => {
       it("authenticates through api", async () => {
-        serverLogIn.mockImplementation(async () => true);
+        serverLogIn.mockImplementation(async () => ({"success":true,"token":"rec5jE3JjG9KSvRKX"}));
         const dispatch = jest.fn();
+        const next = jest.fn();
 
-        await authMiddleware({ dispatch })()(
+        await authMiddleware({ dispatch })(next)(
           authenticate("email@example.com", "password")
         );
         expect(serverLogIn).toBeCalledWith("email@example.com", "password");
         expect(dispatch).toBeCalledWith({
           type: "LOG_IN",
+          payload: "rec5jE3JjG9KSvRKX"
         });
       });
     });
@@ -26,8 +28,9 @@ describe("authMiddleware", () => {
       it("authenticates through api", async () => {
         serverLogIn.mockImplementation(() => false);
         const dispatch = jest.fn();
+        const next = jest.fn();
 
-        await authMiddleware({ dispatch })()(
+        await authMiddleware({ dispatch })(next)(
           authenticate("testlogin", "testpassword")
         );
         expect(dispatch).not.toBeCalled();
