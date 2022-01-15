@@ -4,7 +4,6 @@ import { Provider } from "react-redux";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 import { ProfileWithConnect } from "./Profile";
-// import { store } from "../store"
 import { PrivateRoute } from "../PrivateRoute";
 
 describe("ProfileWithConnect", () => {

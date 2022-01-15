@@ -8,7 +8,7 @@ import {
   saveToken,
   saveCredentials,
   clearCredentials,
-} from "./actions";
+} from "./redux/actions";
 import { serverGetCredentials, serverLogIn, serverRegister } from "./api";
 
 export const authMiddleware = (store) => (next) => async (action) => {

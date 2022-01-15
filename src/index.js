@@ -6,7 +6,7 @@ import { theme } from "loft-taxi-mui-theme"; // Импортируем саму 
 import { MuiThemeProvider, StylesProvider } from "@material-ui/core/styles";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { store } from "./store";
+import { store } from "./redux/store";
 
 ReactDOM.render(
   <React.StrictMode>

@@ -4,6 +4,7 @@ export const LOG_OUT = "LOG_OUT";
 export const AUTHENTICATE = "AUTHENTICATE";
 export const REGISTER = "REGISTER";
 export const SAVE_CREDENTIALS = "SAVE_CREDENTIALS";
+export const UPDATE_CREDENTIALS = "UPDATE_CREDENTIALS";
 export const SAVE_USER_INFO = "SAVE_USER_INFO";
 export const SAVE_TOKEN = "SAVE_TOKEN";
 export const CLEAR_CREDENTIALS = "CLEAR_CREDENTIALS";
@@ -22,6 +23,10 @@ export const register = (email, password, name, surname) => ({
 export const saveToken = (payload) => ({ type: SAVE_TOKEN, payload });
 export const saveCredentials = (payload) => ({
   type: SAVE_CREDENTIALS,
+  payload,
+});
+export const updateCredentials = (payload) => ({
+  type: UPDATE_CREDENTIALS,
   payload,
 });
 export const clearCredentials = () => ({ type: CLEAR_CREDENTIALS });

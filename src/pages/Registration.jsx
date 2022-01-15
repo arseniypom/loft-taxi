@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { register } from "../actions";
+import { register } from "../redux/actions";
 
 import Box from "@mui/material/Box";
 import {

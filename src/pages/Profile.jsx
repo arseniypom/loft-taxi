@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { saveCredentials } from "../actions";
+import { updateCredentials } from "../redux/actions";
 
 import {
   Grid,
@@ -20,9 +20,8 @@ import mapImg from "../assets/images/map.png";
 import logo from "../assets/images/logo.png";
 import cardSymbol1 from "../assets/images/card-symbol1.svg";
 import cardSymbol2 from "../assets/images/card-symbol2.png";
-import { serverSendCredentials } from "../api";
 
-function Profile({ creds, token, saveCredentials }) {
+function Profile({ creds, token, updateCredentials }) {
   const [credentialsData, setCredentialsData] = React.useState({
     cardNumber: creds.cardNumber,
     expiryDate: creds.expiryDate,
@@ -37,20 +36,7 @@ function Profile({ creds, token, saveCredentials }) {
 
   const handleSubmit = async () => {
     const { cardNumber, expiryDate, cardName, cvc } = credentialsData;
-    const success = await serverSendCredentials(
-      cardNumber,
-      expiryDate,
-      cardName,
-      cvc,
-      token
-    );
-    if (success) {
-      localStorage.setItem(
-        "billingInfo",
-        JSON.stringify({ cardNumber, expiryDate, cardName, cvc })
-      );
-      saveCredentials({cardNumber, expiryDate, cardName, cvc});
-    }
+    updateCredentials({cardNumber, expiryDate, cardName, cvc, token});
   };
 
   return (
@@ -200,12 +186,12 @@ function Profile({ creds, token, saveCredentials }) {
 }
 
 Profile.propTypes = {
-  saveCredentials: PropTypes.func,
+  updateCredentials: PropTypes.func,
 };
 
 export const ProfileWithConnect = connect(
   (state) => ({ creds: state.creds, token: state.auth.token }),
   {
-    saveCredentials,
+    updateCredentials,
   }
 )(Profile);
