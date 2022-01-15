@@ -31,7 +31,7 @@ const ActionLink = styled(StyledLink)`
   }
 `;
 
-function Registration({ isLoggedIn, register }) {
+function Registration({ isLoading, isLoggedIn, register }) {
   const navigate = useNavigate();
   const [registrationData, setRegistrationData] = React.useState({
     email: "",
@@ -46,7 +46,12 @@ function Registration({ isLoggedIn, register }) {
   };
 
   const handleSubmit = () => {
-    register(registrationData.email, registrationData.name, registrationData.surname, registrationData.password);
+    register(
+      registrationData.email,
+      registrationData.name,
+      registrationData.surname,
+      registrationData.password
+    );
   };
 
   if (isLoggedIn) {
@@ -142,17 +147,20 @@ function Registration({ isLoggedIn, register }) {
               />
             </CardContent>
             <CardActions>
-              <ActionButton size="large" onClick={handleSubmit}>
-                Зарегистрироваться
-              </ActionButton>
+              {isLoading ? (
+                <ActionButton size="large" disabled>
+                  Загрузка...
+                </ActionButton>
+              ) : (
+                <ActionButton size="large" onClick={handleSubmit}>
+                  Зарегистрироваться
+                </ActionButton>
+              )}
             </CardActions>
             <Typography>
               Уже зарегистрированы?
               <Link to="/">
-                <ActionLink
-                  component="button"
-                  variant="body1"
-                >
+                <ActionLink component="button" variant="body1">
                   Войти
                 </ActionLink>
               </Link>
@@ -170,6 +178,9 @@ Registration.propTypes = {
 };
 
 export const RegistrationWithConnect = connect(
-  (state) => ({ isLoggedIn: state.auth.isLoggedIn }),
+  (state) => ({
+    isLoggedIn: state.auth.isLoggedIn,
+    isLoading: state.loading.isLoading,
+  }),
   { register }
 )(Registration);

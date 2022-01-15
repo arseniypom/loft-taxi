@@ -31,8 +31,7 @@ const ActionLink = styled(StyledLink)`
   }
 `;
 
-function Login({ isLoggedIn, authenticate }) {
-  // const navigate = useNavigate();
+function Login({ isLoading, isLoggedIn, authenticate }) {
   const [loginData, setLoginData] = React.useState({
     email: "",
     password: "",
@@ -48,9 +47,7 @@ function Login({ isLoggedIn, authenticate }) {
   };
 
   if (isLoggedIn) {
-    return (
-      <Navigate to='/map' />
-    )
+    return <Navigate to="/map" />;
   }
 
   return (
@@ -123,18 +120,21 @@ function Login({ isLoggedIn, authenticate }) {
             </CardContent>
 
             <CardActions>
-              <ActionButton size="large" onClick={handleSubmit}>
-                Войти
-              </ActionButton>
+              {isLoading ? (
+                <ActionButton size="large" disabled>
+                  Загрузка...
+                </ActionButton>
+              ) : (
+                <ActionButton size="large" onClick={handleSubmit}>
+                  Войти
+                </ActionButton>
+              )}
             </CardActions>
 
             <Typography color="#828282">
               Новый пользователь?
               <Link to="/registration">
-                <ActionLink
-                  component="button"
-                  variant="body1"
-                >
+                <ActionLink component="button" variant="body1">
                   Регистрация
                 </ActionLink>
               </Link>
@@ -152,6 +152,9 @@ Login.propTypes = {
 };
 
 export const LoginWithConnect = connect(
-  (state) => ({ isLoggedIn: state.auth.isLoggedIn }),
+  (state) => ({
+    isLoggedIn: state.auth.isLoggedIn,
+    isLoading: state.loading.isLoading,
+  }),
   { authenticate }
 )(Login);

@@ -5,12 +5,15 @@ import { serverLogIn } from "./api";
 jest.mock("./api", () => ({ serverLogIn: jest.fn(() => true) }));
 
 describe("authMiddleware", () => {
-  afterAll(jest.clearAllMocks)
+  afterAll(jest.clearAllMocks);
 
   describe("#AUTHENTICATE", () => {
     describe("with correct credentials", () => {
       it("authenticates through api", async () => {
-        serverLogIn.mockImplementation(async () => ({"success":true,"token":"rec5jE3JjG9KSvRKX"}));
+        serverLogIn.mockImplementation(async () => ({
+          success: true,
+          token: "rec5jE3JjG9KSvRKX",
+        }));
         const dispatch = jest.fn();
         const next = jest.fn();
 
@@ -19,8 +22,16 @@ describe("authMiddleware", () => {
         );
         expect(serverLogIn).toBeCalledWith("email@example.com", "password");
         expect(dispatch).toBeCalledWith({
+          type: "SET_LOADING",
+          payload: true,
+        });
+        expect(dispatch).toBeCalledWith({
+          type: "SET_LOADING",
+          payload: false,
+        });
+        expect(dispatch).toBeCalledWith({
           type: "LOG_IN",
-          payload: "rec5jE3JjG9KSvRKX"
+          payload: "rec5jE3JjG9KSvRKX",
         });
       });
     });
@@ -31,9 +42,12 @@ describe("authMiddleware", () => {
         const next = jest.fn();
 
         await authMiddleware({ dispatch })(next)(
-          authenticate("testlogin", "testpassword")
+          authenticate("email@example.com", "password11")
         );
-        expect(dispatch).not.toBeCalled();
+        expect(dispatch).not.toBeCalledWith({
+          type: "LOG_IN",
+          payload: "rec5jE3JjG9KSvRKX",
+        });
       });
     });
   });

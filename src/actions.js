@@ -1,3 +1,4 @@
+export const SET_LOADING = "SET_LOADING";
 export const LOG_IN = "LOG_IN";
 export const LOG_OUT = "LOG_OUT";
 export const AUTHENTICATE = "AUTHENTICATE";
@@ -7,6 +8,7 @@ export const SAVE_USER_INFO = "SAVE_USER_INFO";
 export const SAVE_TOKEN = "SAVE_TOKEN";
 export const CLEAR_CREDENTIALS = "CLEAR_CREDENTIALS";
 
+export const setLoading = (payload) => ({type: SET_LOADING, payload})
 export const logIn = (payload) => ({ type: LOG_IN, payload });
 export const logOut = () => ({ type: LOG_OUT });
 export const authenticate = (email, password) => ({
