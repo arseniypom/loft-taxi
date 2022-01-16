@@ -18,13 +18,12 @@ export function* authenticateSaga(action) {
   if (data.success) {
     localStorage.setItem("token", JSON.stringify(data.token));
     yield put(saveToken(data.token));
-    yield put(logIn());
+    yield put(logIn(data.token));
   }
 }
 // Сага для получения ранее сохраненных платежных данных во время логина
 export function* logInSaga(action) {
   const data = yield call(serverGetCredentials, action.payload);
-  console.log(data);
   if (data) {
     yield put(
       saveCredentials({
@@ -49,6 +48,6 @@ export function* registrationSaga(action) {
   if (data.success) {
     localStorage.setItem("token", JSON.stringify(data.token));
     yield put(saveToken(data.token));
-    yield put(logIn());
+    yield put(logIn(data.token));
   }
 }
