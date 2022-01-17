@@ -44,7 +44,11 @@ function Registration({ isLoading, isLoggedIn, register }) {
     const { name, value } = e.target;
     setRegistrationData((prev) => ({ ...prev, [name]: value }));
   };
-
+  const handleKeyPress = (e) => {
+    if(e.key === 'Enter'){
+      handleSubmit()
+    }
+  }
   const handleSubmit = () => {
     register(
       registrationData.email,
@@ -142,6 +146,7 @@ function Registration({ isLoading, isLoggedIn, register }) {
                 type="password"
                 variant="standard"
                 onChange={handleInput}
+                onKeyPress={handleKeyPress}
                 sx={{ mb: 2 }}
                 fullWidth
               />

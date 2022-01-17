@@ -41,7 +41,11 @@ function Login({ isLoading, isLoggedIn, authenticate }) {
     const { name, value } = e.target;
     setLoginData((prev) => ({ ...prev, [name]: value }));
   };
-
+  const handleKeyPress = (e) => {
+    if(e.key === 'Enter'){
+      handleSubmit()
+    }
+  }
   const handleSubmit = () => {
     authenticate(loginData.email, loginData.password);
   };
@@ -112,6 +116,7 @@ function Login({ isLoading, isLoggedIn, authenticate }) {
                 type="password"
                 variant="standard"
                 onChange={handleInput}
+                onKeyPress={handleKeyPress}
                 sx={{ mb: 2 }}
                 fullWidth
               />
