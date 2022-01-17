@@ -22,7 +22,7 @@ export function* authenticateSaga(action) {
   }
 }
 // Сага для получения ранее сохраненных платежных данных во время логина
-export function* logInSaga(action) {
+export function* getCredentialsSaga(action) {
   const data = yield call(serverGetCredentials, action.payload);
   if (data) {
     yield put(

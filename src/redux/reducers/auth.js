@@ -1,7 +1,7 @@
 import { LOG_IN, LOG_OUT, REGISTER, SAVE_TOKEN } from "../actions";
 
 const initialState = {
-  isLoggedIn: false,
+  isLoggedIn: JSON.parse(localStorage.getItem("token")) ? true : false,
   token: JSON.parse(localStorage.getItem("token")) || "",
   name: "",
   surname: "",

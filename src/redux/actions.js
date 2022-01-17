@@ -15,6 +15,7 @@ export const GET_ROUTE = "GET_ROUTE";
 export const GET_ROUTE_SUCCESS = "GET_ROUTE_SUCCESS";
 export const GET_ROUTE_ERROR = "GET_ROUTE_ERROR";
 export const RESET_ROUTE = "RESET_ROUTE";
+export const GET_CREDENTIALS = "GET_CREDENTIALS";
 
 export const setLoading = (payload) => ({ type: SET_LOADING, payload });
 export const logIn = (payload) => ({ type: LOG_IN, payload });
@@ -28,6 +29,10 @@ export const register = (email, password, name, surname) => ({
   payload: { email, password, name, surname },
 });
 export const saveToken = (payload) => ({ type: SAVE_TOKEN, payload });
+export const getCredentials = (payload) => ({
+  type: GET_CREDENTIALS,
+  payload,
+});
 export const saveCredentials = (payload) => ({
   type: SAVE_CREDENTIALS,
   payload,

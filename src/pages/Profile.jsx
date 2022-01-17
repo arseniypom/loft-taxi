@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { updateCredentials } from "../redux/actions";
+import { getCredentials, updateCredentials } from "../redux/actions";
 
 import {
   Grid,
@@ -21,13 +21,36 @@ import logo from "../assets/images/logo.png";
 import cardSymbol1 from "../assets/images/card-symbol1.svg";
 import cardSymbol2 from "../assets/images/card-symbol2.png";
 
-function Profile({ creds, token, updateCredentials }) {
+function Profile({ creds, token, getCredentials, updateCredentials }) {
   const [credentialsData, setCredentialsData] = React.useState({
-    cardNumber: creds.cardNumber,
-    expiryDate: creds.expiryDate,
-    cardName: creds.cardName,
-    cvc: creds.cvc,
+    cardNumber: "",
+    expiryDate: "",
+    cardName: "",
+    cvc: "",
   });
+
+  React.useEffect(() => {
+    // const fetchCredentials = async () => {
+    //   await getCredentials();
+      // setCredentialsData({
+      //   cardNumber: creds.cardNumber,
+      //   expiryDate: creds.expiryDate,
+      //   cardName: creds.cardName,
+      //   cvc: creds.cvc,
+      // });
+    // };
+    getCredentials();
+
+    // fetchCredentials();
+  }, [getCredentials]);
+  React.useEffect(() => {
+    setCredentialsData({
+      cardNumber: creds.cardNumber,
+      expiryDate: creds.expiryDate,
+      cardName: creds.cardName,
+      cvc: creds.cvc,
+    });
+  }, [creds])
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -36,7 +59,7 @@ function Profile({ creds, token, updateCredentials }) {
 
   const handleSubmit = async () => {
     const { cardNumber, expiryDate, cardName, cvc } = credentialsData;
-    updateCredentials({cardNumber, expiryDate, cardName, cvc, token});
+    updateCredentials({ cardNumber, expiryDate, cardName, cvc, token });
   };
 
   return (
@@ -146,7 +169,7 @@ function Profile({ creds, token, updateCredentials }) {
                             alt="logo"
                             style={{ width: "33px" }}
                           />
-                          <Typography>05/08</Typography>
+                          <Typography>{credentialsData.expiryDate}</Typography>
                         </Box>
                       </Grid>
                       <Grid item>
@@ -192,6 +215,7 @@ Profile.propTypes = {
 export const ProfileWithConnect = connect(
   (state) => ({ creds: state.creds, token: state.auth.token }),
   {
+    getCredentials,
     updateCredentials,
   }
 )(Profile);

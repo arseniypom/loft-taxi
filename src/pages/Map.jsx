@@ -26,14 +26,19 @@ function Map({ cardNumber, getRoute, resetRoute, coordinates }) {
     });
 
     return () => {
-      resetRoute()
+      resetRoute();
       map.current = null;
     };
-  }, []);
+  }, [resetRoute]);
 
   React.useEffect(() => {
+    const clearAndDrawRoute = async (coordinates) => {
+      await clearRoute();
+      await drawRoute(coordinates);
+    };
+
     if (coordinates.length) {
-      drawRoute(coordinates);
+      clearAndDrawRoute(coordinates);
     }
   }, [coordinates]);
 
@@ -51,7 +56,6 @@ function Map({ cardNumber, getRoute, resetRoute, coordinates }) {
   };
 
   const drawRoute = async (coordinates) => {
-    await clearRoute();
     map.current.flyTo({
       center: coordinates[0],
       zoom: 13,
