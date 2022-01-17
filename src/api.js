@@ -39,3 +39,13 @@ export const serverSendCredentials = async ({cardNumber, expiryDate, cardName, c
     .then((res) => res.json())
     .then((data) => data.success);
 };
+
+export const serverGetAddressList = async () => {
+  return fetch(`https://loft-taxi.glitch.me/addressList`)
+    .then((res) => res.json())
+};
+
+export const serverGetRouteCoordinates = async (from, to) => {
+  return fetch(`https://loft-taxi.glitch.me/route?address1=${from}&address2=${to}`)
+    .then((res) => res.json())
+};

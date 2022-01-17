@@ -153,7 +153,8 @@ function Login({ isLoading, isLoggedIn, authenticate }) {
 
 Login.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
-  logIn: PropTypes.func,
+  isLoading: PropTypes.bool.isRequired,
+  authenticate: PropTypes.func,
 };
 
 export const LoginWithConnect = connect(

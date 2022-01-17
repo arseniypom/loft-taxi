@@ -179,6 +179,7 @@ function Registration({ isLoading, isLoggedIn, register }) {
 
 Registration.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool.isRequired,
   register: PropTypes.func,
 };
 

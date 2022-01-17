@@ -11,10 +11,10 @@ import { serverGetCredentials, serverLogIn, serverRegister } from "../../api";
 
 // Сага для отправки данных на сервер во время логина
 export function* authenticateSaga(action) {
-  yield put(setLoading(true))
+  yield put(setLoading(true));
   const { email, password } = action.payload;
   const data = yield call(serverLogIn, email, password);
-  yield put(setLoading(false))
+  yield put(setLoading(false));
   if (data.success) {
     localStorage.setItem("token", JSON.stringify(data.token));
     yield put(saveToken(data.token));
@@ -41,10 +41,10 @@ export function* logOutSaga() {
 }
 // Сага для отправки регистрационных данных на сервер
 export function* registrationSaga(action) {
-  yield put(setLoading(true))
+  yield put(setLoading(true));
   const { email, password, name, surname } = action.payload;
   const data = yield call(serverRegister, email, password, name, surname);
-  yield put(setLoading(false))
+  yield put(setLoading(false));
   if (data.success) {
     localStorage.setItem("token", JSON.stringify(data.token));
     yield put(saveToken(data.token));

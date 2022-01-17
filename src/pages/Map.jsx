@@ -7,9 +7,10 @@ import { connect } from "react-redux";
 import { Box, Card, Grid } from "@mui/material";
 
 import { HeaderWithConnect } from "../components/Header";
-import OrderModal from "../components/OrderModal";
+import { OrderModalWithConnect } from "../components/OrderModal";
+import { getRoute, resetRoute } from "../redux/actions";
 
-function Map({ cardNumber }) {
+function Map({ cardNumber, getRoute, resetRoute, coordinates }) {
   const mapRef = React.useRef(null);
   const map = React.useRef(null);
 
@@ -19,15 +20,67 @@ function Map({ cardNumber }) {
 
     map.current = new mapboxgl.Map({
       container: mapRef.current,
-      style: "mapbox://styles/mapbox/streets-v11",
+      style: "mapbox://styles/arseniypom/ckyikgfw4k35s14ruf4cgq6ol",
       center: [30.3056504, 59.9429126],
       zoom: 13,
     });
 
     return () => {
+      resetRoute()
       map.current = null;
     };
   }, []);
+
+  React.useEffect(() => {
+    if (coordinates.length) {
+      drawRoute(coordinates);
+    }
+  }, [coordinates]);
+
+  const handleOrder = ({ from, to }) => {
+    getRoute({ from, to });
+  };
+
+  const clearRoute = async () => {
+    const isLayer = await map.current.getLayer("route");
+    const isSource = await map.current.getSource("route");
+    if (isLayer || isSource) {
+      map.current.removeLayer("route");
+      map.current.removeSource("route");
+    }
+  };
+
+  const drawRoute = async (coordinates) => {
+    await clearRoute();
+    map.current.flyTo({
+      center: coordinates[0],
+      zoom: 13,
+    });
+
+    map.current.addLayer({
+      id: "route",
+      type: "line",
+      source: {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          properties: {},
+          geometry: {
+            type: "LineString",
+            coordinates,
+          },
+        },
+      },
+      layout: {
+        "line-join": "round",
+        "line-cap": "round",
+      },
+      paint: {
+        "line-color": "#ffc617",
+        "line-width": 8,
+      },
+    });
+  };
 
   return (
     <Grid container direction="column" sx={{ height: "100vh" }}>
@@ -36,7 +89,7 @@ function Map({ cardNumber }) {
       </Grid>
       <Grid item xs sx={{ position: "relative" }}>
         {cardNumber ? (
-          <OrderModal />
+          <OrderModalWithConnect handleOrder={handleOrder} />
         ) : (
           <Card
             variant="outlined"
@@ -78,6 +131,7 @@ Map.propTypes = {
 export const MapWithConnect = connect(
   (state) => ({
     cardNumber: state.creds.cardNumber,
+    coordinates: state.route.coordinates,
   }),
-  {}
+  { getRoute, resetRoute }
 )(Map);
