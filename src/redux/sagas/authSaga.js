@@ -37,6 +37,7 @@ export function* getCredentialsSaga(action) {
 }
 // Сага для очищения сохраненных в сторе данных пользователя
 export function* logOutSaga() {
+  localStorage.clear();
   yield put(clearCredentials());
 }
 // Сага для отправки регистрационных данных на сервер

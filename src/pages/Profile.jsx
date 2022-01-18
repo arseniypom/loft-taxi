@@ -30,19 +30,11 @@ function Profile({ creds, token, getCredentials, updateCredentials }) {
   });
 
   React.useEffect(() => {
-    // const fetchCredentials = async () => {
-    //   await getCredentials();
-      // setCredentialsData({
-      //   cardNumber: creds.cardNumber,
-      //   expiryDate: creds.expiryDate,
-      //   cardName: creds.cardName,
-      //   cvc: creds.cvc,
-      // });
-    // };
-    getCredentials();
+    if (!creds.cardNumber) {
+      getCredentials(token);
+    }
+  }, [getCredentials, token, creds.cardNumber]);
 
-    // fetchCredentials();
-  }, [getCredentials]);
   React.useEffect(() => {
     setCredentialsData({
       cardNumber: creds.cardNumber,

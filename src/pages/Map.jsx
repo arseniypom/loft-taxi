@@ -8,11 +8,24 @@ import { Box, Card, Grid } from "@mui/material";
 
 import { HeaderWithConnect } from "../components/Header";
 import { OrderModalWithConnect } from "../components/OrderModal";
-import { getRoute, resetRoute } from "../redux/actions";
+import { getRoute, resetRoute, getCredentials } from "../redux/actions";
 
-function Map({ cardNumber, getRoute, resetRoute, coordinates }) {
+function Map({
+  cardNumber,
+  getRoute,
+  resetRoute,
+  coordinates,
+  token,
+  getCredentials,
+}) {
   const mapRef = React.useRef(null);
   const map = React.useRef(null);
+
+  React.useEffect(() => {
+    if (!cardNumber) {
+      getCredentials(token);
+    }
+  }, [getCredentials, token, cardNumber]);
 
   React.useEffect(() => {
     mapboxgl.accessToken =
@@ -136,6 +149,7 @@ export const MapWithConnect = connect(
   (state) => ({
     cardNumber: state.creds.cardNumber,
     coordinates: state.route.coordinates,
+    token: state.auth.token,
   }),
-  { getRoute, resetRoute }
+  { getRoute, resetRoute, getCredentials }
 )(Map);
