@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { saveCredentials } from "../actions";
+import { getCredentials, updateCredentials } from "../redux/actions";
 
 import {
   Grid,
@@ -20,15 +20,29 @@ import mapImg from "../assets/images/map.png";
 import logo from "../assets/images/logo.png";
 import cardSymbol1 from "../assets/images/card-symbol1.svg";
 import cardSymbol2 from "../assets/images/card-symbol2.png";
-import { serverSendCredentials } from "../api";
 
-function Profile({ creds, token, saveCredentials }) {
+function Profile({ creds, token, getCredentials, updateCredentials }) {
   const [credentialsData, setCredentialsData] = React.useState({
-    cardNumber: creds.cardNumber,
-    expiryDate: creds.expiryDate,
-    cardName: creds.cardName,
-    cvc: creds.cvc,
+    cardNumber: "",
+    expiryDate: "",
+    cardName: "",
+    cvc: "",
   });
+
+  React.useEffect(() => {
+    if (!creds.cardNumber) {
+      getCredentials(token);
+    }
+  }, [getCredentials, token, creds.cardNumber]);
+
+  React.useEffect(() => {
+    setCredentialsData({
+      cardNumber: creds.cardNumber,
+      expiryDate: creds.expiryDate,
+      cardName: creds.cardName,
+      cvc: creds.cvc,
+    });
+  }, [creds])
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -37,20 +51,7 @@ function Profile({ creds, token, saveCredentials }) {
 
   const handleSubmit = async () => {
     const { cardNumber, expiryDate, cardName, cvc } = credentialsData;
-    const success = await serverSendCredentials(
-      cardNumber,
-      expiryDate,
-      cardName,
-      cvc,
-      token
-    );
-    if (success) {
-      localStorage.setItem(
-        "billingInfo",
-        JSON.stringify({ cardNumber, expiryDate, cardName, cvc })
-      );
-      saveCredentials({cardNumber, expiryDate, cardName, cvc});
-    }
+    updateCredentials({ cardNumber, expiryDate, cardName, cvc, token });
   };
 
   return (
@@ -160,7 +161,7 @@ function Profile({ creds, token, saveCredentials }) {
                             alt="logo"
                             style={{ width: "33px" }}
                           />
-                          <Typography>05/08</Typography>
+                          <Typography>{credentialsData.expiryDate}</Typography>
                         </Box>
                       </Grid>
                       <Grid item>
@@ -200,12 +201,13 @@ function Profile({ creds, token, saveCredentials }) {
 }
 
 Profile.propTypes = {
-  saveCredentials: PropTypes.func,
+  updateCredentials: PropTypes.func,
 };
 
 export const ProfileWithConnect = connect(
   (state) => ({ creds: state.creds, token: state.auth.token }),
   {
-    saveCredentials,
+    getCredentials,
+    updateCredentials,
   }
 )(Profile);

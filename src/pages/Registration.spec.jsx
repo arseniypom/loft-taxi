@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 import { RegistrationWithConnect } from "./Registration";
-import { store } from "../store";
+import { store } from "../redux/store";
 
 describe("RegistrationWithConnect", () => {
   it("renders correctly", () => {

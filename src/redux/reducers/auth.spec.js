@@ -6,7 +6,6 @@ describe("auth", () => {
     it("returns isLoggedIn:true and received token", () => {
       expect(auth({}, logIn("token123"))).toEqual({
         isLoggedIn: true,
-        token: "token123",
       });
     });
   });

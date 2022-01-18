@@ -27,7 +27,7 @@ export const serverGetCredentials = async (token) => {
     .then((res) => res.json())
 };
 
-export const serverSendCredentials = async (cardNumber, expiryDate, cardName, cvc, token) => {
+export const serverSendCredentials = async ({cardNumber, expiryDate, cardName, cvc, token}) => {
   return fetch(`https://loft-taxi.glitch.me/card`, {
     method: "POST",
     headers: {
@@ -38,4 +38,14 @@ export const serverSendCredentials = async (cardNumber, expiryDate, cardName, cv
   })
     .then((res) => res.json())
     .then((data) => data.success);
+};
+
+export const serverGetAddressList = async () => {
+  return fetch(`https://loft-taxi.glitch.me/addressList`)
+    .then((res) => res.json())
+};
+
+export const serverGetRouteCoordinates = async (from, to) => {
+  return fetch(`https://loft-taxi.glitch.me/route?address1=${from}&address2=${to}`)
+    .then((res) => res.json())
 };

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { register } from "../actions";
+import { register } from "../redux/actions";
 
 import Box from "@mui/material/Box";
 import {
@@ -44,7 +44,11 @@ function Registration({ isLoading, isLoggedIn, register }) {
     const { name, value } = e.target;
     setRegistrationData((prev) => ({ ...prev, [name]: value }));
   };
-
+  const handleKeyPress = (e) => {
+    if(e.key === 'Enter'){
+      handleSubmit()
+    }
+  }
   const handleSubmit = () => {
     register(
       registrationData.email,
@@ -142,6 +146,7 @@ function Registration({ isLoading, isLoggedIn, register }) {
                 type="password"
                 variant="standard"
                 onChange={handleInput}
+                onKeyPress={handleKeyPress}
                 sx={{ mb: 2 }}
                 fullWidth
               />
@@ -174,6 +179,7 @@ function Registration({ isLoading, isLoggedIn, register }) {
 
 Registration.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool.isRequired,
   register: PropTypes.func,
 };
 

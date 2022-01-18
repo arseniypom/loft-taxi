@@ -1,5 +1,5 @@
 import { authMiddleware } from "./authMiddleware";
-import { authenticate } from "./actions";
+import { authenticate } from "./redux/actions";
 import { serverLogIn } from "./api";
 
 jest.mock("./api", () => ({ serverLogIn: jest.fn(() => true) }));

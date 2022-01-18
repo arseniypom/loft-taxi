@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { authenticate } from "../actions";
+import { authenticate } from "../redux/actions";
 
 import Box from "@mui/material/Box";
 import {
@@ -41,7 +41,11 @@ function Login({ isLoading, isLoggedIn, authenticate }) {
     const { name, value } = e.target;
     setLoginData((prev) => ({ ...prev, [name]: value }));
   };
-
+  const handleKeyPress = (e) => {
+    if(e.key === 'Enter'){
+      handleSubmit()
+    }
+  }
   const handleSubmit = () => {
     authenticate(loginData.email, loginData.password);
   };
@@ -112,6 +116,7 @@ function Login({ isLoading, isLoggedIn, authenticate }) {
                 type="password"
                 variant="standard"
                 onChange={handleInput}
+                onKeyPress={handleKeyPress}
                 sx={{ mb: 2 }}
                 fullWidth
               />
@@ -148,7 +153,8 @@ function Login({ isLoading, isLoggedIn, authenticate }) {
 
 Login.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
-  logIn: PropTypes.func,
+  isLoading: PropTypes.bool.isRequired,
+  authenticate: PropTypes.func,
 };
 
 export const LoginWithConnect = connect(

@@ -4,7 +4,7 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { render } from "@testing-library/react";
 
 import { LoginWithConnect } from "./Login";
-import { store } from "../store";
+import { store } from "../redux/store";
 
 describe("LoginWithConnect", () => {
   it("renders correctly", () => {
