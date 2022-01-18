@@ -143,6 +143,11 @@ function Map({
 
 Map.propTypes = {
   cardNumber: PropTypes.string,
+  getRoute: PropTypes.func.isRequired,
+  resetRoute: PropTypes.func.isRequired,
+  getCredentials: PropTypes.func.isRequired,
+  coordinates: PropTypes.array,
+  token: PropTypes.string.isRequired,
 };
 
 export const MapWithConnect = connect(

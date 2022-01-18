@@ -42,7 +42,7 @@ function Profile({ creds, token, getCredentials, updateCredentials }) {
       cardName: creds.cardName,
       cvc: creds.cvc,
     });
-  }, [creds])
+  }, [creds]);
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -202,6 +202,9 @@ function Profile({ creds, token, getCredentials, updateCredentials }) {
 
 Profile.propTypes = {
   updateCredentials: PropTypes.func,
+  creds: PropTypes.object,
+  token: PropTypes.string,
+  getCredentials: PropTypes.func,
 };
 
 export const ProfileWithConnect = connect(
