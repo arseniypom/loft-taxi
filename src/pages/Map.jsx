@@ -9,6 +9,7 @@ import { Box, Card, Grid } from "@mui/material";
 import { HeaderWithConnect } from "../components/Header";
 import { OrderModalWithConnect } from "../components/OrderModal";
 import { getRoute, resetRoute, getCredentials } from "../redux/actions";
+import ActionButton from "../components/ActionButton";
 
 function Map({
   cardNumber,
@@ -18,6 +19,7 @@ function Map({
   token,
   getCredentials,
 }) {
+  const [isOrderPlaced, setOrderPlaced] = React.useState(false);
   const mapRef = React.useRef(null);
   const map = React.useRef(null);
 
@@ -55,8 +57,9 @@ function Map({
     }
   }, [coordinates]);
 
-  const handleOrder = ({ from, to }) => {
-    getRoute({ from, to });
+  const handleOrder = async ({ from, to }) => {
+    await getRoute({ from, to });
+    setOrderPlaced(true)
   };
 
   const clearRoute = async () => {
@@ -106,7 +109,31 @@ function Map({
       </Grid>
       <Grid item xs sx={{ position: "relative" }}>
         {cardNumber ? (
-          <OrderModalWithConnect handleOrder={handleOrder} />
+          isOrderPlaced ? (
+            <Card
+              variant="outlined"
+              sx={{
+                maxWidth: 300,
+                textAlign: "left",
+                position: "absolute",
+                top: "4rem",
+                left: "4rem",
+                zIndex: "modal",
+                p: "15px 40px",
+              }}
+            >
+              <h2>Заказ размещён</h2>
+              <p>
+                Ваше такси уже едет к вам. Прибудет приблизительно через 10
+                минут.
+              </p>
+              <ActionButton size="large" onClick={() => setOrderPlaced(false)}>
+                Сделать новый заказ
+              </ActionButton>
+            </Card>
+          ) : (
+            <OrderModalWithConnect handleOrder={handleOrder} />
+          )
         ) : (
           <Card
             variant="outlined"
