@@ -121,6 +121,7 @@ function Login({ isLoading, isLoggedIn, authenticate }) {
                     onBlur={handleBlur}
                     value={values.email}
                     helperText={errors.email && touched.email && errors.email}
+                    error={errors.email}
                     sx={{ mb: 2 }}
                     fullWidth
                   />
@@ -141,6 +142,7 @@ function Login({ isLoading, isLoggedIn, authenticate }) {
                       errors.password && touched.password && errors.password
                     }
                     value={values.password}
+                    error={errors.password}
                     sx={{ mb: 2 }}
                     fullWidth
                   />
